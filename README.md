@@ -1,13 +1,25 @@
-# NOVORA AppControl
+# LINK Control
 
-Repositorio privado de distribución de AppControl (`com.novora.appcontrol`).
+Repositorio privado del código Android de LINK Control (antes AppControl), compañero de NOVORA-LINK.
 
-## Política de versiones
+Estado de fuente sincronizado el 19 de octubre de 2026: **1.4.113 / código 113**, paquete `com.novora.appcontrol`, Android 11/API 30 o posterior, Release ARM64.
 
-Desde 1.4.110, cada nueva APK preparada debe conservarse como una GitHub Release independiente, etiqueta `v<versionName>`, con APK firmada, `NLAndroidRelease.json` y SHA-256. Verificar packageId, versionCode, versionName, minSdk, ABI y certificado de la APK antes de publicar.
+## Código y compilación
 
-No reemplazar binarios publicados ni reconstruir versiones históricas a partir de fuentes posteriores. Mantener identidad de firma; no publicar claves, keystores, contraseñas ni tokens. Separar pruebas locales de validación física en las notas.
+El proyecto está en `src/NOVORA.Android/NLProjectAndroid.csproj`. `src/NOVORA` contiene únicamente contratos, utilidades y recursos enlazados necesarios para Android y sus pruebas; no es una copia del escritorio completo.
 
-La APK original 1.4.110 está pendiente de localizar. La siguiente APK localizada es 1.4.111.
+Requiere .NET 10 y la carga de trabajo Android. Verificar el código sin generar una nueva APK:
 
-Publicar releases no implementa por sí solo la actualización desde Android. Este canal privado requiere autorización de descarga; no incrustar credenciales compartidas en AppControl.
+```powershell
+dotnet workload restore src/NOVORA.Android/NLProjectAndroid.csproj
+dotnet build src/NOVORA.Android/NLProjectAndroid.csproj -c Release -r android-arm64 -t:Compile -p:AndroidBuildApplicationPackage=false
+./scripts/Test-NOVORA-CI.ps1 -Configuration Release
+```
+
+CI compila y ejecuta pruebas de contrato; no instala, firma ni publica APK, ni valida sesiones físicas USB/LAN. No se versionan bin/obj ni claves de firma. El desarrollo canónico continúa en NOVORA-LINK.
+
+## Política de distribución
+
+Conservar cada APK publicada desde 1.4.110 como release independiente `v<versionName>`, con APK firmada, `NLAndroidRelease.json` y SHA256SUMS. No reemplazar activos históricos ni reconstruirlos desde fuentes posteriores. La APK original 1.4.110 continúa pendiente de localizar. La publicación registrada de 1.4.111 se conserva; subir fuente 1.4.113 no publica su APK.
+
+Toda APK nueva requiere N+1, firma compatible y comprobación de manifiesto/hash/certificado. Nunca publicar keystores, contraseñas o tokens. El canal privado requiere autorización individual; el actualizador Android permanece como propuesta y no se incorpora por subir este código.

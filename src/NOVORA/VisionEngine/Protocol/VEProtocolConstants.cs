@@ -1,0 +1,29 @@
+namespace NOVORA.VisionEngine.Protocol;
+
+/// <summary>
+/// Constantes del protocolo multimedia compartido por App Control y VisionEngine.
+/// </summary>
+public static class VEProtocolConstants
+{
+    public const int PacketHeaderSizeVE = 12;
+    public const int CodecIdSizeVE = 4;
+    public const int MaxPacketLengthVE = 64 * 1024 * 1024;
+
+    public const int RawAudioSampleRateVE = 48_000;
+    public const int RawAudioChannelsVE = 2;
+    public const int RawAudioBytesPerSampleVE = 2;
+    public const int RawAudioPacketMillisecondsVE = 20;
+    public const int RawAudioPacketBytesVE =
+        RawAudioSampleRateVE * RawAudioChannelsVE * RawAudioBytesPerSampleVE *
+        RawAudioPacketMillisecondsVE / 1000;
+
+    public const ulong PacketFlagSessionVE = 1UL << 63;
+    public const ulong PacketFlagConfigVE = 1UL << 62;
+    public const ulong PacketFlagKeyFrameVE = 1UL << 61;
+    public const ulong PacketPtsMaskVE = PacketFlagKeyFrameVE - 1;
+
+    public const int FfmpegInputPaddingSizeVE = 64;
+    public const int FfmpegAgainVE = -11;
+    public const int FfmpegEofVE = -541478725;
+
+}
